@@ -1,0 +1,13 @@
+# Backend
+mystreet-backend/target/
+mystreet-backend/.idea/
+mystreet-backend/*.iml
+
+# Frontend
+mystreet-frontend/node_modules/
+mystreet-frontend/dist/
+mystreet-frontend/.env
+
+# OS
+.DS_Store
+Thumbs.db
