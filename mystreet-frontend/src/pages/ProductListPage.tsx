@@ -38,7 +38,7 @@ export default function ProductListPage() {
     productService
       .getAll(params)
       .then(setProducts)
-      .catch(() => setError('Failed to load products. Is the backend running?'))
+      .catch(() => setError('Failed to load products. Server might be down.'))
       .finally(() => setLoading(false));
   }, [brand, size]);
 

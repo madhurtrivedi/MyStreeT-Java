@@ -7,7 +7,6 @@ export default function HomePage() {
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: '#0a0a0a', color: '#fff', overflow: 'hidden' }}>
-      {/* Hero */}
       <Container maxWidth="xl">
         <Box
           sx={{
@@ -19,7 +18,6 @@ export default function HomePage() {
             py: 10,
           }}
         >
-          {/* Background accent */}
           <Box
             sx={{
               position: 'absolute',
