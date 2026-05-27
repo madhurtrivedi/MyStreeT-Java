@@ -1,7 +1,7 @@
-package com.mystreet.backend.controller;
+package com.mystreet.controller;
 
-import com.mystreet.backend.dto.ProductDTO;
-import com.mystreet.backend.service.ProductService;
+import com.mystreet.dto.ProductDTO;
+import com.mystreet.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

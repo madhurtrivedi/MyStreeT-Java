@@ -1,4 +1,4 @@
-package com.mystreet.backend.dto;
+package com.mystreet.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

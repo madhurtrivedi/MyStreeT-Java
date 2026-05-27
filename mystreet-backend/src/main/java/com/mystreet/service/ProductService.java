@@ -1,8 +1,8 @@
-package com.mystreet.backend.service;
+package com.mystreet.service;
 
-import com.mystreet.backend.dto.ProductDTO;
-import com.mystreet.backend.model.Product;
-import com.mystreet.backend.repository.ProductRepository;
+import com.mystreet.dto.ProductDTO;
+import com.mystreet.model.Product;
+import com.mystreet.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

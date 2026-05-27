@@ -1,4 +1,4 @@
-package com.mystreet.backend.model;
+package com.mystreet.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

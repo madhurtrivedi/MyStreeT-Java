@@ -1,6 +1,6 @@
-package com.mystreet.backend.repository;
+package com.mystreet.repository;
 
-import com.mystreet.backend.model.Product;
+import com.mystreet.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

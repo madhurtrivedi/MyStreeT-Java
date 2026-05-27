@@ -1,4 +1,4 @@
-package com.mystreet.backend;
+package com.mystreet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
