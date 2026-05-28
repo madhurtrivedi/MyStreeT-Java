@@ -67,7 +67,15 @@ export default function RegisterPage() {
         token: data.token,
       });
 
-      navigate("/", { replace: true });
+      navigate("/products", {
+        replace: true,
+        state: {
+          toast: {
+            message: "Registered successfully!",
+            severity: "success",
+          },
+        },
+      });
     } catch (err) {
       if (axios.isAxiosError(err)) {
         const msg = err.response?.data?.message ?? "Registration failed. Please try again.";

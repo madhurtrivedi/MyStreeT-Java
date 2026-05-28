@@ -11,8 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import ToastNotification from '../components/ToastNotification';
 import { productService } from '../services/api';
 import type { Product } from '../types';
 
@@ -21,6 +22,14 @@ const SIZES = ['All', '6', '7', '8', '9', '10', '11', '12'];
 
 export default function ProductListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const [toast, setToast] = useState<{
+    message: string;
+    severity?: 'success' | 'info' | 'warning' | 'error';
+  } | null>(() => {
+    const state = location.state as { toast?: { message: string; severity?: 'success' | 'info' | 'warning' | 'error' } } | null;
+    return state?.toast ?? null;
+  });
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -51,6 +60,12 @@ export default function ProductListPage() {
 
   return (
     <Box sx={{ bgcolor: '#0a0a0a', minHeight: '100vh', color: '#fff', py: 6 }}>
+      <ToastNotification
+        open={!!toast}
+        message={toast?.message ?? ''}
+        severity={toast?.severity}
+        onClose={() => setToast(null)}
+      />
       <Container maxWidth="xl">
         {/* Header */}
         <Box sx={{ mb: 5 }}>
