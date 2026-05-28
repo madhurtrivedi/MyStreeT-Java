@@ -20,7 +20,7 @@ import type { Product } from '../types';
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,9 +33,9 @@ export default function ProductDetailPage() {
     setLoading(true);
     productService
       .getById(id)
-      .then((p) => {
+      .then((res) => {
+        const p = res.data;
         setProduct(p);
-        // Auto-select first size
         const sizes = p.sizesCsv.split(',').map((s) => s.trim());
         if (sizes.length > 0) setSelectedSize(sizes[0]);
       })
@@ -45,7 +45,8 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = () => {
     if (!product || !selectedSize) return;
-    addToCart(product, selectedSize);
+    // addItem(product, selectedSize);
+    addItem({ productId: product.id, name: product.name, brand: product.brand, price: product.price, imageUrl: product.imageUrl, size: selectedSize, quantity: 1 });
     setSnackOpen(true);
   };
 

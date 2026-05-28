@@ -36,8 +36,8 @@ export default function ProductListPage() {
     if (size !== 'All') params.size = size;
 
     productService
-      .getAll(params)
-      .then(setProducts)
+      .getAll(params.brand, params.size)
+      .then((res) => setProducts(res.data as Product[]))
       .catch(() => setError('Failed to load products. Server might be down.'))
       .finally(() => setLoading(false));
   }, [brand, size]);

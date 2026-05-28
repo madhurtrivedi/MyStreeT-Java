@@ -1,47 +1,105 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
-import { CartProvider } from './context/CartContext';
-import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import ProductListPage from './pages/ProductListPage';
-import ProductDetailPage from './pages/ProductDetailPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider, createTheme, CssBaseline, Box } from "@mui/material";
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/HomePage";
+import ProductListPage from "./pages/ProductListPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import CartPage from "./pages/CartPage";
 
-const darkTheme = createTheme({
+const theme = createTheme({
   palette: {
-    mode: 'dark',
-    primary: { main: '#ff5000' },
-    background: { default: '#0a0a0a', paper: '#111' },
+    mode: "dark",
+    primary: { main: "#e8ff00", contrastText: "#000" },
+    background: { default: "#0a0a0a", paper: "#111" },
   },
   typography: {
-    fontFamily: '"DM Sans", sans-serif',
+    fontFamily: "'DM Sans', 'Helvetica Neue', Arial, sans-serif",
   },
+  shape: { borderRadius: 10 },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700;800&display=swap');
-        body { background: #0a0a0a; }
-        * { box-sizing: border-box; }
-      `,
+    MuiButton: {
+      styleOverrides: {
+        root: { textTransform: "none", borderRadius: 8 },
+      },
+    },
+    MuiTextField: {
+      defaultProps: { variant: "outlined" },
     },
   },
 });
 
 export default function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
-      <CartProvider>
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/products" element={<ProductListPage />} />
-            <Route path="/products/:id" element={<ProductDetailPage />} />
-            {/* Sprint 2: /cart, /checkout, /auth/login, /auth/register */}
-            {/* Sprint 3: /admin/products, /orders/confirmation */}
-          </Routes>
-        </BrowserRouter>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Navbar />
+            <Box component="main" sx={{ minHeight: "calc(100vh - 64px)" }}>
+              <Routes>
+                {/* Public */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/products" element={<ProductListPage />} />
+                <Route path="/products/:id" element={<ProductDetailPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+
+                {/* Auth required */}
+                <Route
+                  path="/cart"
+                  element={
+                    <ProtectedRoute>
+                      <CartPage />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Sprint 3 routes (uncomment when building) */}
+                {/*
+                <Route
+                  path="/checkout"
+                  element={
+                    <ProtectedRoute>
+                      <CheckoutPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders"
+                  element={
+                    <ProtectedRoute>
+                      <OrderListPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/orders/:id"
+                  element={
+                    <ProtectedRoute>
+                      <OrderConfirmationPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/products"
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminProductsPage />
+                    </ProtectedRoute>
+                  }
+                />
+                */}
+              </Routes>
+            </Box>
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
