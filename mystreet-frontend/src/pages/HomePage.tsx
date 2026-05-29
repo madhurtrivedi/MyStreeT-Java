@@ -90,23 +90,6 @@ export default function HomePage() {
             >
               Shop All Sneakers
             </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={() => navigate('/products?brand=Nike')}
-              sx={{
-                borderColor: '#333',
-                color: '#aaa',
-                px: 4,
-                py: 1.5,
-                borderRadius: 1,
-                textTransform: 'none',
-                fontSize: '1rem',
-                '&:hover': { borderColor: '#666', color: '#fff', bgcolor: 'transparent' },
-              }}
-            >
-              Nike Edit
-            </Button>
           </Box>
 
           {/* Stats row */}

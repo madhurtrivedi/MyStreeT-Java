@@ -10,6 +10,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -48,8 +49,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                               new SimpleGrantedAuthority("ROLE_ADMIN"))
                     : List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
-            var auth = new UsernamePasswordAuthenticationToken(email, null, authorities);
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            UserDetails userDetails = org.springframework.security.core.userdetails.User
+                    .withUsername(email)
+                    .password("")
+                    .authorities(authorities)
+                    .build();
+
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            //auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(auth);
             log.debug("Authenticated '{}' (admin={})", email, isAdmin);

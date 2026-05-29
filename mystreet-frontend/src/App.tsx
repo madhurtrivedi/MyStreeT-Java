@@ -4,12 +4,18 @@ import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+// Pages
 import HomePage from "./pages/HomePage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import OrderListPage from "./pages/OrderListPage";
+import AdminProductsPage from "./pages/AdminProductsPage";
 
 const theme = createTheme({
   palette: {
@@ -23,13 +29,9 @@ const theme = createTheme({
   shape: { borderRadius: 10 },
   components: {
     MuiButton: {
-      styleOverrides: {
-        root: { textTransform: "none", borderRadius: 8 },
-      },
+      styleOverrides: { root: { textTransform: "none", borderRadius: 8 } },
     },
-    MuiTextField: {
-      defaultProps: { variant: "outlined" },
-    },
+    MuiTextField: { defaultProps: { variant: "outlined" } },
   },
 });
 
@@ -51,50 +53,13 @@ export default function App() {
                 <Route path="/register" element={<RegisterPage />} />
 
                 {/* Auth required */}
-                <Route
-                  path="/cart"
-                  element={
-                    <ProtectedRoute>
-                      <CartPage />
-                    </ProtectedRoute>
-                  }
-                />
+                <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>} />
+                <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+                <Route path="/orders" element={<ProtectedRoute><OrderListPage /></ProtectedRoute>} />
+                <Route path="/orders/:id" element={<ProtectedRoute><OrderConfirmationPage /></ProtectedRoute>} />
 
-                {/* Sprint 3 routes (uncomment when building) */}
-                {/*
-                <Route
-                  path="/checkout"
-                  element={
-                    <ProtectedRoute>
-                      <CheckoutPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/orders"
-                  element={
-                    <ProtectedRoute>
-                      <OrderListPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/orders/:id"
-                  element={
-                    <ProtectedRoute>
-                      <OrderConfirmationPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin/products"
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminProductsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                */}
+                {/* Admin only */}
+                <Route path="/admin/products" element={<ProtectedRoute adminOnly><AdminProductsPage /></ProtectedRoute>} />
               </Routes>
             </Box>
           </BrowserRouter>

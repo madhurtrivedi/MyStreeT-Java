@@ -1,6 +1,8 @@
 package com.mystreet.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     // ── Shape ─────────────────────────────────────────────────────────────────
 
@@ -35,6 +39,7 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining("; "));
 
+        logger.warn("Validation error at {}: {}", request.getRequestURI(), message);
         return build(HttpStatus.BAD_REQUEST, request.getRequestURI(),
                 "VALIDATION_ERROR", message);
     }
@@ -43,6 +48,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponse> handleConflict(
             ConflictException ex, HttpServletRequest request) {
+        logger.warn("Conflict at {}: {}", request.getRequestURI(), ex.getMessage());
         return build(HttpStatus.CONFLICT, request.getRequestURI(),
                 "CONFLICT", ex.getMessage());
     }
@@ -51,6 +57,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorized(
             UnauthorizedException ex, HttpServletRequest request) {
+        logger.warn("Unauthorized at {}: {}", request.getRequestURI(), ex.getMessage());
         return build(HttpStatus.UNAUTHORIZED, request.getRequestURI(),
                 "UNAUTHORIZED", ex.getMessage());
     }
@@ -59,14 +66,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(
             ResourceNotFoundException ex, HttpServletRequest request) {
+        logger.warn("Not found at {}: {}", request.getRequestURI(), ex.getMessage());
         return build(HttpStatus.NOT_FOUND, request.getRequestURI(),
                 "NOT_FOUND", ex.getMessage());
     }
 
-    /** Catch-all → 500 */
+    /** Catch-all for unexpected exceptions → 500 */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(
             Exception ex, HttpServletRequest request) {
+        logger.error("UNEXPECTED ERROR at {}: {}", request.getRequestURI(), ex.getMessage(), ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI(),
                 "INTERNAL_ERROR", "An unexpected error occurred");
     }
